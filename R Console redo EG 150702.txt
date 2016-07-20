@@ -1,0 +1,776 @@
+> 
+> ClusDataWide<-read.csv("AllDataClus outliers removed.csv")
+> library(reshape)
+> ClusDataLong<-melt(ClusDataWide, id=c("Subj","Cluster"))
+> head(ClusDataLong)
+  Subj Cluster  variable      value
+1  280       1 PercHappy 0.40312843
+2  283       1 PercHappy 0.26987827
+3  300       2 PercHappy 0.42626980
+4  303       2 PercHappy 0.08585341
+5  354       2 PercHappy 0.23939064
+6  357       1 PercHappy 0.12361331
+> ###
+> setwd("/Users/abbiepopa/Documents/Lab/DPTB/RT and Overall Eye Gaze/Data")
+> 
+> ClusDataWide<-read.csv("AllDataClus outliers removed.csv")
+> library(reshape)
+> ClusDataLong<-melt(ClusDataWide, id=c("Subj","Cluster"))
+> 
+> library(nlme)
+> colnames(ClusDataLong)<-c("Subj","Cluster","Condition","LookingTime")
+> ClusDataLong$centeredLookingTime<-ClusDataLong$LookingTime - (1/3)
+> 
+> #Angry Trials#
+> dataAngry<-subset(DxDataLong, Condition=="PercAngry" | Condition=="PercAngryNeutral")
+> fitac<-lme(centeredLookingTime~factor(Condition)*Cluster, random=~1|Subj, data=dataAngry)
+Error in eval(expr, envir, enclos) : object 'Cluster' not found
+> 
+> dataAngry1<-subset(dataAngry, Cluster==1)
+Error in eval(expr, envir, enclos) : object 'Cluster' not found
+> dataAngry2<-subset(dataAngry, Cluster==2)
+Error in eval(expr, envir, enclos) : object 'Cluster' not found
+> 
+> fitac1<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataAngry1)
+Error in is.data.frame(data) : object 'dataAngry1' not found
+> fitac2<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataAngry2)
+Error in is.data.frame(data) : object 'dataAngry2' not found
+> 
+> summary(fitac)
+Linear mixed-effects model fit by REML
+ Data: dataAngry 
+        AIC       BIC   logLik
+  -134.2285 -120.0883 73.11426
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06905357 0.06557458
+
+Fixed effects: centeredLookingTime ~ factor(Condition) + factor(Dx) + factor(Condition) *      factor(Dx) 
+                                                     Value  Std.Error DF   t-value p-value
+(Intercept)                                     0.01531165 0.01832669 39  0.835484  0.4085
+factor(Condition)PercAngryNeutral              -0.09966380 0.01784714 39 -5.584301  0.0000
+factor(Dx)TD                                   -0.01843205 0.03136259 39 -0.587708  0.5601
+factor(Condition)PercAngryNeutral:factor(Dx)TD  0.00252471 0.03054193 39  0.082664  0.9345
+ Correlation: 
+                                               (Intr) fc(C)PAN f(D)TD
+factor(Condition)PercAngryNeutral              -0.487                
+factor(Dx)TD                                   -0.584  0.285         
+factor(Condition)PercAngryNeutral:factor(Dx)TD  0.285 -0.584   -0.487
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.85375950 -0.61686287  0.02776173  0.63765831  1.52751211 
+
+Number of Observations: 82
+Number of Groups: 41 
+> summary(fitac1)
+Error in summary(fitac1) : object 'fitac1' not found
+> summary(fitac2)
+Error in summary(fitac2) : object 'fitac2' not found
+> dataAngry
+    Subj  Dx        Condition LookingTime centeredLookingTime
+42   277 22q        PercAngry 0.304397163        -0.028936170
+43   280 22q        PercAngry 0.315789474        -0.017543859
+44   283 22q        PercAngry 0.305954280        -0.027379053
+45   300 22q        PercAngry 0.385065478         0.051732145
+46   303  TD        PercAngry 0.096326740        -0.237006593
+47   354 22q        PercAngry 0.251596053        -0.081737280
+48   357 22q        PercAngry 0.126760563        -0.206572770
+49   368 22q        PercAngry 0.427421851         0.094088518
+50   385 22q        PercAngry 0.049113233        -0.284220100
+51   677 22q        PercAngry 0.459737587         0.126404254
+52   687 22q        PercAngry 0.380339196         0.047005863
+53   690 22q        PercAngry 0.409090909         0.075757576
+54   731 22q        PercAngry 0.339144873         0.005811540
+55   733 22q        PercAngry 0.399893787         0.066560454
+56   740 22q        PercAngry 0.273441734        -0.059891599
+57   745 22q        PercAngry 0.415727523         0.082394190
+58   754 22q        PercAngry 0.392994611         0.059661278
+59   755 22q        PercAngry 0.407349081         0.074015748
+60   756  TD        PercAngry 0.348575908         0.015242575
+61   757  TD        PercAngry 0.219404306        -0.113929027
+62   761 22q        PercAngry 0.324847814        -0.008485519
+63   763 22q        PercAngry 0.422685928         0.089352595
+64   768 22q        PercAngry 0.338049144         0.004715811
+65   774  TD        PercAngry 0.452854560         0.119521227
+66   775  TD        PercAngry 0.355097672         0.021764339
+67   777  TD        PercAngry 0.374162946         0.040829613
+68   779  TD        PercAngry 0.427864798         0.094531465
+69   780 22q        PercAngry 0.287517532        -0.045815801
+70   781  TD        PercAngry 0.412338518         0.079005185
+71   783 22q        PercAngry 0.477416441         0.144083108
+72   784 22q        PercAngry 0.440596697         0.107263364
+73   786  TD        PercAngry 0.081240390        -0.252092943
+74   788 22q        PercAngry 0.318441841        -0.014891492
+75   790  TD        PercAngry 0.494796062         0.161462729
+76   792 22q        PercAngry 0.388762122         0.055428789
+77   796  TD        PercAngry 0.229290359        -0.104042974
+78   797  TD        PercAngry 0.235416667        -0.097916666
+79   799  TD        PercAngry 0.473304473         0.139971140
+80   800 22q        PercAngry 0.375000000         0.041666667
+81   803 22q        PercAngry 0.396279594         0.062946261
+82   806  TD        PercAngry 0.422307692         0.088974359
+206  277 22q PercAngryNeutral 0.221843972        -0.111489361
+207  280 22q PercAngryNeutral 0.312881652        -0.020451681
+208  283 22q PercAngryNeutral 0.227006911        -0.106326422
+209  300 22q PercAngryNeutral 0.183337977        -0.149995356
+210  303  TD PercAngryNeutral 0.103005394        -0.230327939
+211  354 22q PercAngryNeutral 0.183401045        -0.149932288
+212  357 22q PercAngryNeutral 0.179745137        -0.153588196
+213  368 22q PercAngryNeutral 0.224698236        -0.108635097
+214  385 22q PercAngryNeutral 0.006480218        -0.326853115
+215  677 22q PercAngryNeutral 0.213275019        -0.120058314
+216  687 22q PercAngryNeutral 0.270728643        -0.062604690
+217  690 22q PercAngryNeutral 0.316676701        -0.016656632
+218  731 22q PercAngryNeutral 0.244084682        -0.089248651
+219  733 22q PercAngryNeutral 0.199150292        -0.134183041
+220  740 22q PercAngryNeutral 0.309214092        -0.024119241
+221  745 22q PercAngryNeutral 0.332081142        -0.001252191
+222  754 22q PercAngryNeutral 0.114703618        -0.218629715
+223  755 22q PercAngryNeutral 0.311023622        -0.022309711
+224  756  TD PercAngryNeutral 0.312777633        -0.020555700
+225  757  TD PercAngryNeutral 0.302565615        -0.030767718
+226  761 22q PercAngryNeutral 0.302711677        -0.030621656
+227  763 22q PercAngryNeutral 0.228999465        -0.104333868
+228  768 22q PercAngryNeutral 0.348721767         0.015388434
+229  774  TD PercAngryNeutral 0.343063808         0.009730475
+230  775  TD PercAngryNeutral 0.330478994        -0.002854339
+231  777  TD PercAngryNeutral 0.266462054        -0.066871279
+232  779  TD PercAngryNeutral 0.231382248        -0.101951085
+233  780 22q PercAngryNeutral 0.254908836        -0.078424497
+234  781  TD PercAngryNeutral 0.202478249        -0.130855084
+235  783 22q PercAngryNeutral 0.296296296        -0.037037037
+236  784 22q PercAngryNeutral 0.238145978        -0.095187355
+237  786  TD PercAngryNeutral 0.066119938        -0.267213395
+238  788 22q PercAngryNeutral 0.279215473        -0.054117860
+239  790  TD PercAngryNeutral 0.255414909        -0.077918424
+240  792 22q PercAngryNeutral 0.330861380        -0.002471953
+241  796  TD PercAngryNeutral 0.162849873        -0.170483460
+242  797  TD PercAngryNeutral 0.224702381        -0.108630952
+243  799  TD PercAngryNeutral 0.237373737        -0.095959596
+244  800 22q PercAngryNeutral 0.285646388        -0.047686945
+245  803 22q PercAngryNeutral 0.306651635        -0.026681698
+246  806  TD PercAngryNeutral 0.224358974        -0.108974359
+> 
+> dataAngry<-subset(ClusDataLong, Condition=="PercAngry" | Condition=="PercAngryNeutral")
+> fitac<-lme(centeredLookingTime~factor(Condition)*Cluster, random=~1|Subj, data=dataAngry)
+> 
+> dataAngry1<-subset(dataAngry, Cluster==1)
+> dataAngry2<-subset(dataAngry, Cluster==2)
+> 
+> fitac1<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataAngry1)
+> fitac2<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataAngry2)
+> 
+> summary(fitac)
+Linear mixed-effects model fit by REML
+ Data: dataAngry 
+        AIC       BIC   logLik
+  -111.7321 -98.41508 61.86606
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:   0.0722808 0.06588962
+
+Fixed effects: centeredLookingTime ~ factor(Condition) * Cluster 
+                                                Value  Std.Error DF    t-value p-value
+(Intercept)                                0.01974611 0.04959654 34  0.3981347  0.6930
+factor(Condition)PercAngryNeutral         -0.07872519 0.04725190 34 -1.6660747  0.1049
+Cluster                                   -0.00728134 0.03306436 34 -0.2202172  0.8270
+factor(Condition)PercAngryNeutral:Cluster -0.01397179 0.03150126 34 -0.4435312  0.6602
+ Correlation: 
+                                          (Intr) fc(C)PAN Clustr
+factor(Condition)PercAngryNeutral         -0.476                
+Cluster                                   -0.944  0.450         
+factor(Condition)PercAngryNeutral:Cluster  0.450 -0.944   -0.476
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.7567846 -0.5898845  0.1304174  0.5278115  1.4076769 
+
+Number of Observations: 72
+Number of Groups: 36 
+> summary(fitac1)
+Linear mixed-effects model fit by REML
+ Data: dataAngry1 
+        AIC       BIC   logLik
+  -73.57955 -66.82403 40.78977
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06768237 0.05835291
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF   t-value p-value
+(Intercept)                        0.01246476 0.01950087 20  0.639190    0.53
+factor(Condition)PercAngryNeutral -0.09269698 0.01800810 20 -5.147516    0.00
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercAngryNeutral -0.462
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.9271292 -0.6190028  0.1936199  0.4472801  1.3785312 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fitac2)
+Linear mixed-effects model fit by REML
+ Data: dataAngry2 
+        AIC       BIC   logLik
+  -35.78577 -30.45696 21.89289
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.07838334 0.07536002
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF   t-value p-value
+(Intercept)                        0.00518342 0.02807499 14  0.184628  0.8562
+factor(Condition)PercAngryNeutral -0.10666877 0.02751759 14 -3.876385  0.0017
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercAngryNeutral -0.49 
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.53016001 -0.53020542 -0.02735214  0.65242028  1.25769155 
+
+Number of Observations: 30
+Number of Groups: 15 
+> 
+> dataHappy<-subset(ClusDataLong, Condition=="PercHappy" | Condition=="PercHappyNeutral")
+> fithc<-lme(centeredLookingTime~factor(Condition)*Cluster, random=~1|Subj, data=dataHappy)
+> 
+> dataHappy1<-subset(dataHappy, Cluster==1)
+> dataHappy2<-subset(dataHappy, Cluster==2)
+> 
+> fithc1<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataHappy1)
+> fithc2<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=dataHappy2)
+> 
+> summary(fithc)
+Linear mixed-effects model fit by REML
+ Data: dataHappy 
+        AIC       BIC   logLik
+  -93.24512 -79.92807 52.62256
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06905706 0.08233187
+
+Fixed effects: centeredLookingTime ~ factor(Condition) * Cluster 
+                                                Value  Std.Error DF    t-value p-value
+(Intercept)                                0.00446747 0.05449160 34  0.0819846  0.9351
+factor(Condition)PercHappyNeutral         -0.07311581 0.05904324 34 -1.2383434  0.2241
+Cluster                                   -0.01424117 0.03632774 34 -0.3920193  0.6975
+factor(Condition)PercHappyNeutral:Cluster  0.00319049 0.03936216 34  0.0810547  0.9359
+ Correlation: 
+                                          (Intr) fc(C)PHN Clustr
+factor(Condition)PercHappyNeutral         -0.542                
+Cluster                                   -0.944  0.512         
+factor(Condition)PercHappyNeutral:Cluster  0.512 -0.944   -0.542
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.97899662 -0.49891247  0.01877475  0.56705191  2.51674370 
+
+Number of Observations: 72
+Number of Groups: 36 
+> summary(fithc1)
+Linear mixed-effects model fit by REML
+ Data: dataHappy1 
+        AIC       BIC   logLik
+  -50.52247 -43.76695 29.26124
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06600166 0.08985423
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF    t-value p-value
+(Intercept)                       -0.00977370 0.02432910 20 -0.4017288  0.6921
+factor(Condition)PercHappyNeutral -0.06992532 0.02772962 20 -2.5216834  0.0203
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercHappyNeutral -0.57 
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.77445949 -0.57332112 -0.03369381  0.58233311  2.34490885 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fithc2)
+Linear mixed-effects model fit by REML
+ Data: dataHappy2 
+        AIC    BIC   logLik
+  -39.70882 -34.38 23.85441
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.07320092 0.07020107
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF    t-value p-value
+(Intercept)                       -0.02401487 0.02618723 14 -0.9170452  0.3746
+factor(Condition)PercHappyNeutral -0.06673483 0.02563381 14 -2.6033914  0.0208
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercHappyNeutral -0.489
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.54581296 -0.34973622 -0.05799645  0.47973296  1.53349891 
+
+Number of Observations: 30
+Number of Groups: 15 
+> #
+> DataEmo<-subset(ClusDataLong, Condition=="PercHappy" | Condition == "PercAngry")
+> fitemoc<-lme(centeredLookingTime~factor(Condition)*Cluster, random=~1|Subj, data=DataEmo)
+> 
+> DataEmo1<-subset(DataEmo, Cluster==1)
+> DataEmo2<-subset(DataEmo, Cluster==2)
+> 
+> fitemoc1<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=DataEmo1)
+> fitemoc2<-lme(ceneteredLookingTime~factor(Condition), random=~1|Subj, data=DataEmo2)
+Error in eval(expr, envir, enclos) : 
+  object 'ceneteredLookingTime' not found
+> 
+> summary(fitemoc)
+Linear mixed-effects model fit by REML
+ Data: DataEmo 
+        AIC       BIC   logLik
+  -104.0892 -90.77219 58.04462
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)  Residual
+StdDev:   0.1021365 0.0576533
+
+Fixed effects: centeredLookingTime ~ factor(Condition) * Cluster 
+                                          Value  Std.Error DF    t-value p-value
+(Intercept)                         0.004467475 0.05947433 34  0.0751160  0.9406
+factor(Condition)PercAngry          0.015278632 0.04134532 34  0.3695372  0.7140
+Cluster                            -0.014241174 0.03964955 34 -0.3591762  0.7217
+factor(Condition)PercAngry:Cluster  0.006959832 0.02756355 34  0.2525013  0.8022
+ Correlation: 
+                                   (Intr) fc(C)PA Clustr
+factor(Condition)PercAngry         -0.348               
+Cluster                            -0.944  0.328        
+factor(Condition)PercAngry:Cluster  0.328 -0.944  -0.348
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.4087145 -0.4820833 -0.1571627  0.5555412  1.7760426 
+
+Number of Observations: 72
+Number of Groups: 36 
+> summary(fitemoc1)
+Linear mixed-effects model fit by REML
+ Data: DataEmo1 
+        AIC       BIC   logLik
+  -63.22624 -56.47072 35.61312
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.09093805 0.05975548
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                 Value  Std.Error DF    t-value p-value
+(Intercept)                -0.00977370 0.02374512 20 -0.4116087  0.6850
+factor(Condition)PercAngry  0.02223846 0.01844094 20  1.2059290  0.2419
+ Correlation: 
+                           (Intr)
+factor(Condition)PercAngry -0.388
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.2622433 -0.6446999 -0.1335722  0.5369101  1.8194320 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fitemoc2)
+Error in summary(fitemoc2) : object 'fitemoc2' not found
+> 
+> fitemoc2<-lme(centeredLookingTime~factor(Condition), random=~1|Subj, data=DataEmo2)
+> 
+> summary(fitemoc)
+Linear mixed-effects model fit by REML
+ Data: DataEmo 
+        AIC       BIC   logLik
+  -104.0892 -90.77219 58.04462
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)  Residual
+StdDev:   0.1021365 0.0576533
+
+Fixed effects: centeredLookingTime ~ factor(Condition) * Cluster 
+                                          Value  Std.Error DF    t-value p-value
+(Intercept)                         0.004467475 0.05947433 34  0.0751160  0.9406
+factor(Condition)PercAngry          0.015278632 0.04134532 34  0.3695372  0.7140
+Cluster                            -0.014241174 0.03964955 34 -0.3591762  0.7217
+factor(Condition)PercAngry:Cluster  0.006959832 0.02756355 34  0.2525013  0.8022
+ Correlation: 
+                                   (Intr) fc(C)PA Clustr
+factor(Condition)PercAngry         -0.348               
+Cluster                            -0.944  0.328        
+factor(Condition)PercAngry:Cluster  0.328 -0.944  -0.348
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.4087145 -0.4820833 -0.1571627  0.5555412  1.7760426 
+
+Number of Observations: 72
+Number of Groups: 36 
+> summary(fitemoc1)
+Linear mixed-effects model fit by REML
+ Data: DataEmo1 
+        AIC       BIC   logLik
+  -63.22624 -56.47072 35.61312
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.09093805 0.05975548
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                 Value  Std.Error DF    t-value p-value
+(Intercept)                -0.00977370 0.02374512 20 -0.4116087  0.6850
+factor(Condition)PercAngry  0.02223846 0.01844094 20  1.2059290  0.2419
+ Correlation: 
+                           (Intr)
+factor(Condition)PercAngry -0.388
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.2622433 -0.6446999 -0.1335722  0.5369101  1.8194320 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fitemoc2)
+Linear mixed-effects model fit by REML
+ Data: DataEmo2 
+        AIC       BIC   logLik
+  -37.67182 -32.34301 22.83591
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:    0.116278 0.05450982
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                 Value  Std.Error DF    t-value p-value
+(Intercept)                -0.02401487 0.03315809 14 -0.7242538  0.4808
+factor(Condition)PercAngry  0.02919830 0.01990417 14  1.4669434  0.1645
+ Correlation: 
+                           (Intr)
+factor(Condition)PercAngry -0.3  
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.5147406 -0.5361425 -0.2100304  0.5907802  1.6424971 
+
+Number of Observations: 30
+Number of Groups: 15 
+> 
+> library(psych)
+> d1<-describeBy(ClusDataWide, group=ClusDataWide$Cluster, digits=4)[[1]]
+> d2<-describeBy(ClusDataWide, group=ClusDataWide$Cluster, digits=4)[[2]]
+> 
+> DG1<-d1[c("PercHappy","PercAngry","PercHappyNeutral","PercAngryNeutral"), c("n","mean","sd","se")]
+> 
+> DG2<-d2[c("PercHappy","PercAngry","PercHappyNeutral","PercAngryNeutral"), c("n","mean","sd","se")]
+> 
+> DG1perc<-DG1*100
+> DG2perc<-DG2*100
+> DG1perc
+                    n     mean        sd       se
+PercHappy        2100 32.35596 11.929013 2.603124
+PercAngry        2100 34.57981  9.721501 2.121405
+PercHappyNeutral 2100 25.36343 10.310127 2.249854
+PercAngryNeutral 2100 25.31011  8.075377 1.762192
+> DG2perc
+                    n     mean        sd       se
+PercHappy        1500 30.93185 12.403262 3.202508
+PercAngry        1500 33.85168 13.266388 3.425367
+PercHappyNeutral 1500 24.25836  7.203504 1.859937
+PercAngryNeutral 1500 23.18480  7.775903 2.007730
+> 14+27
+[1] 41
+> 21+15+4+2
+[1] 42
+> DxDataWide$CABIL_ID
+ [1] 277 280 283 300 303 354 357 368 385 677 687 690 731 733 740 745 754 755 756 757 761 763 768 774 775
+[26] 777 779 780 781 783 784 786 788 790 792 796 797 799 800 803 806
+> ClusDataWide$Subj
+ [1] 280 283 300 303 354 357 368 385 677 687 690 731 733 745 754 755 756 757 761 763 768 774 775 777 779
+[26] 780 784 786 788 790 792 797 799 800 803 806
+> test<-rbind(DxDataWide, ClusDataWide)
+Error in match.names(clabs, names(xi)) : 
+  names do not match previous names
+> colnames(DxDataWide)
+ [1] "CABIL_ID"         "PercHappy"        "PercAngry"        "PercLeft"         "PercRight"       
+ [6] "PercHappyNeutral" "PercAngryNeutral" "PercInvalid"      "PercHappyNonFace" "PercAngryNonFace"
+[11] "Dx"              
+> colnames(ClusDataWide)
+ [1] "Subj"             "PercHappy"        "PercAngry"        "PercLeft"         "PercRight"       
+ [6] "PercHappyNeutral" "PercAngryNeutral" "PercInvalid"      "PercHappyNonFace" "PercAngryNonFace"
+[11] "Cluster"         
+> colnames(ClusDataWide)<-colnames(DxDataWide)
+> test<-rbind(DxDataWide, ClusDataWide)
+Warning message:
+In `[<-.factor`(`*tmp*`, ri, value = c(1L, 1L, 2L, 2L, 2L, 1L, 1L,  :
+  invalid factor level, NA generated
+> dim(test)
+[1] 77 11
+> unique(test$CABIL_ID)
+ [1] 277 280 283 300 303 354 357 368 385 677 687 690 731 733 740 745 754 755 756 757 761 763 768 774 775
+[26] 777 779 780 781 783 784 786 788 790 792 796 797 799 800 803 806
+> ClusDataWide$Cluster
+NULL
+> ClusDataWide$Dx
+ [1] 1 1 2 2 2 1 1 1 2 1 1 1 1 1 1 1 2 2 1 1 1 2 2 2 2 1 1 2 1 2 1 2 2 1 1 2
+> ClusDataWide$ClusforPerc<-ClusDatawide$Dx-1
+Error: object 'ClusDatawide' not found
+> ClusDataWide$ClusforPerc<-ClusDataWide$Dx-1
+> head(ClusDataWide)
+  CABIL_ID  PercHappy  PercAngry   PercLeft  PercRight PercHappyNeutral PercAngryNeutral PercInvalid
+1      280 0.40312843 0.31578947 0.35126359 0.32810956        0.3240944        0.3128817  0.13537598
+2      283 0.26987827 0.30595428 0.14469369 0.31588613        0.1201761        0.2270069  0.06945801
+3      300 0.42626980 0.38506548 0.23224383 0.34919322        0.1679410        0.1833380  0.11476010
+4      303 0.08585341 0.09632674 0.12777421 0.07030148        0.1109687        0.1030054  0.04881025
+5      354 0.23939064 0.25159605 0.27000842 0.18239259        0.2293254        0.1834010  0.13072135
+6      357 0.12361331 0.12676056 0.07446635 0.20058661        0.1217116        0.1797451  0.25112874
+  PercHappyNonFace PercAngryNonFace Dx ClusforPerc
+1        0.2727772        0.3713289  1           0
+2        0.6099456        0.4670388  1           0
+3        0.4057892        0.4315965  2           1
+4        0.8031779        0.8006679  2           1
+5        0.5312840        0.5650029  2           1
+6        0.7546751        0.6934943  1           0
+> mean(ClusForPerc)
+Error in mean(ClusForPerc) : object 'ClusForPerc' not found
+> colnames(ClusDataWide)
+ [1] "CABIL_ID"         "PercHappy"        "PercAngry"        "PercLeft"         "PercRight"       
+ [6] "PercHappyNeutral" "PercAngryNeutral" "PercInvalid"      "PercHappyNonFace" "PercAngryNonFace"
+[11] "Dx"               "ClusforPerc"     
+> 
+> ClusDataWide<-read.csv("AllDataClus outliers removed.csv")
+> colnames(ClusDataWide)[1]<-"CABIL_ID"
+> test2(ClusDataWide, DxDataWide)
+Error: could not find function "test2"
+> test2<-merge(ClusDataWide, DxDataWide)
+> dim(test2)
+[1] 36 12
+> colnames(test2)
+ [1] "CABIL_ID"         "PercHappy"        "PercAngry"        "PercLeft"         "PercRight"       
+ [6] "PercHappyNeutral" "PercAngryNeutral" "PercInvalid"      "PercHappyNonFace" "PercAngryNonFace"
+[11] "Cluster"          "Dx"              
+> table(test2$Cluster, test2$Dx)
+   
+    22q TD
+  1  21  0
+  2   3 12
+> 21/24*100
+[1] 87.5
+> fisher.test(table(test2$Cluster,test$Dx))
+Error in table(test2$Cluster, test$Dx) : 
+  all arguments must have the same length
+> fisher.test(rbind(c(21,0),c(3,12)))
+
+	Fisher's Exact Test for Count Data
+
+data:  rbind(c(21, 0), c(3, 12))
+p-value = 3.635e-07
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 10.68952      Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> fitac1
+Linear mixed-effects model fit by REML
+  Data: dataAngry1 
+  Log-restricted-likelihood: 40.78977
+  Fixed: centeredLookingTime ~ factor(Condition) 
+                      (Intercept) factor(Condition)PercAngryNeutral 
+                       0.01246476                       -0.09269698 
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06768237 0.05835291
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fitac1)
+Linear mixed-effects model fit by REML
+ Data: dataAngry1 
+        AIC       BIC   logLik
+  -73.57955 -66.82403 40.78977
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06768237 0.05835291
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF   t-value p-value
+(Intercept)                        0.01246476 0.01950087 20  0.639190    0.53
+factor(Condition)PercAngryNeutral -0.09269698 0.01800810 20 -5.147516    0.00
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercAngryNeutral -0.462
+
+Standardized Within-Group Residuals:
+       Min         Q1        Med         Q3        Max 
+-1.9271292 -0.6190028  0.1936199  0.4472801  1.3785312 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fitac2)
+Linear mixed-effects model fit by REML
+ Data: dataAngry2 
+        AIC       BIC   logLik
+  -35.78577 -30.45696 21.89289
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.07838334 0.07536002
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF   t-value p-value
+(Intercept)                        0.00518342 0.02807499 14  0.184628  0.8562
+factor(Condition)PercAngryNeutral -0.10666877 0.02751759 14 -3.876385  0.0017
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercAngryNeutral -0.49 
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.53016001 -0.53020542 -0.02735214  0.65242028  1.25769155 
+
+Number of Observations: 30
+Number of Groups: 15 
+> DG1perc
+                    n     mean        sd       se
+PercHappy        2100 32.35596 11.929013 2.603124
+PercAngry        2100 34.57981  9.721501 2.121405
+PercHappyNeutral 2100 25.36343 10.310127 2.249854
+PercAngryNeutral 2100 25.31011  8.075377 1.762192
+> DG2perc
+                    n     mean        sd       se
+PercHappy        1500 30.93185 12.403262 3.202508
+PercAngry        1500 33.85168 13.266388 3.425367
+PercHappyNeutral 1500 24.25836  7.203504 1.859937
+PercAngryNeutral 1500 23.18480  7.775903 2.007730
+> 
+> summary(fithc)
+Linear mixed-effects model fit by REML
+ Data: dataHappy 
+        AIC       BIC   logLik
+  -93.24512 -79.92807 52.62256
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06905706 0.08233187
+
+Fixed effects: centeredLookingTime ~ factor(Condition) * Cluster 
+                                                Value  Std.Error DF    t-value p-value
+(Intercept)                                0.00446747 0.05449160 34  0.0819846  0.9351
+factor(Condition)PercHappyNeutral         -0.07311581 0.05904324 34 -1.2383434  0.2241
+Cluster                                   -0.01424117 0.03632774 34 -0.3920193  0.6975
+factor(Condition)PercHappyNeutral:Cluster  0.00319049 0.03936216 34  0.0810547  0.9359
+ Correlation: 
+                                          (Intr) fc(C)PHN Clustr
+factor(Condition)PercHappyNeutral         -0.542                
+Cluster                                   -0.944  0.512         
+factor(Condition)PercHappyNeutral:Cluster  0.512 -0.944   -0.542
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.97899662 -0.49891247  0.01877475  0.56705191  2.51674370 
+
+Number of Observations: 72
+Number of Groups: 36 
+> summary(fithc1)
+Linear mixed-effects model fit by REML
+ Data: dataHappy1 
+        AIC       BIC   logLik
+  -50.52247 -43.76695 29.26124
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.06600166 0.08985423
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF    t-value p-value
+(Intercept)                       -0.00977370 0.02432910 20 -0.4017288  0.6921
+factor(Condition)PercHappyNeutral -0.06992532 0.02772962 20 -2.5216834  0.0203
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercHappyNeutral -0.57 
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.77445949 -0.57332112 -0.03369381  0.58233311  2.34490885 
+
+Number of Observations: 42
+Number of Groups: 21 
+> summary(fithc2)
+Linear mixed-effects model fit by REML
+ Data: dataHappy2 
+        AIC    BIC   logLik
+  -39.70882 -34.38 23.85441
+
+Random effects:
+ Formula: ~1 | Subj
+        (Intercept)   Residual
+StdDev:  0.07320092 0.07020107
+
+Fixed effects: centeredLookingTime ~ factor(Condition) 
+                                        Value  Std.Error DF    t-value p-value
+(Intercept)                       -0.02401487 0.02618723 14 -0.9170452  0.3746
+factor(Condition)PercHappyNeutral -0.06673483 0.02563381 14 -2.6033914  0.0208
+ Correlation: 
+                                  (Intr)
+factor(Condition)PercHappyNeutral -0.489
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-1.54581296 -0.34973622 -0.05799645  0.47973296  1.53349891 
+
+Number of Observations: 30
+Number of Groups: 15 
+> DG2
+                  n mean   sd   se
+PercHappy        15 0.31 0.12 0.03
+PercAngry        15 0.34 0.13 0.03
+PercHappyNeutral 15 0.24 0.07 0.02
+PercAngryNeutral 15 0.23 0.08 0.02
+> DG2perc
+                    n     mean        sd       se
+PercHappy        1500 30.93185 12.403262 3.202508
+PercAngry        1500 33.85168 13.266388 3.425367
+PercHappyNeutral 1500 24.25836  7.203504 1.859937
+PercAngryNeutral 1500 23.18480  7.775903 2.007730
+> DG1perc
+                    n     mean        sd       se
+PercHappy        2100 32.35596 11.929013 2.603124
+PercAngry        2100 34.57981  9.721501 2.121405
+PercHappyNeutral 2100 25.36343 10.310127 2.249854
+PercAngryNeutral 2100 25.31011  8.075377 1.762192
+> 
