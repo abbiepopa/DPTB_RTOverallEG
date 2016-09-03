@@ -109,7 +109,7 @@ DGTD<-TDdesc[c("PercHappy","PercAngry","PercHappyNeutral","PercAngryNeutral"), c
 DG22qperc<-DG22q*100
 DGTDperc<-DGTD*100
 
-###including shit in models###
+###including other factors (i.e., age, gender, IQ) in models###
 
 #Age - sig Angry & Happy
 summary(lme(LookingTime~factor(Condition)+factor(Dx)+Age, random=~1|Subj, data=dataAngry))
@@ -154,4 +154,3 @@ summary(lme(LookingTime~factor(Condition)+factor(Dx)+ABAS_GAC_Composite_Parent1,
 ###Only age is significant. May actually be useful, since that may lend credence to our "children show different biases than adults" statements
 ###stronger in 22q, could be power effect, could be that developmental delay puts them more in the window for this change
 
-###Need visuals for Tony
